@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Линель — Запись на маникюр</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Фирменные цвета Линель: розовый #F49BB1 и нежно-жёлтый #FFE6A3 */
+            background: linear-gradient(135deg, #F49BB1 0%, #FFE6A3 50%, #F49BB1 100%);
+            background-size: 300% 300%;
+            animation: gradientMove 8s ease-in-out infinite;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 250px;
+            height: 250px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+            animation: flowerFloat 6s ease-in-out infinite;
+        }
+        body::before {
+            top: -30px;
+            left: -30px;
+            background-image: url('https://icons8.com');
+        }
+        body::after {
+            bottom: -30px;
+            right: -30px;
+            background-image: url('https://icons8.com');
+            transform: scaleX(-1) rotate(45deg);
+            animation-delay: -3s;
+        }
+        @keyframes flowerFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .booking-container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(15px);
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(138, 56, 75, 0.35);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #3a3032;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        h2 {
+            color: #4a3e40;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            text-align: left;
+            font-weight: 700;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .service-option {
+            background: #fdf5f6;
+            border: 2px solid #f2e6e8;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+        .service-option:hover {
+            border-color: #d8b4bc;
+            background: #fffcfc;
+            transform: translateY(-1px);
+        }
+        .service-option.selected {
+            border-color: #c08593;
+            background: #fbf0f2;
+            box-shadow: 0 4px 12px rgba(216, 180, 188, 0.3);
+        }
+        .service-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .service-title {
+            font-weight: bold;
+            color: #3a3032;
+            font-size: 16px;
+        }
+        .service-price {
+            font-size: 14px;
+            color: #c08593;
+            margin-top: 4px;font-weight: 600;
+        }
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d8b4bc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .service-option.selected .radio-circle {
+            border-color: #c08593;
+            background: #c08593;
+        }
+        .service-option.selected .radio-circle::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        input[type="text"], input[type="tel"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 2px solid #f2e6e8;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #3a3032;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+            background: #fdf5f6;
+        }
+        input:focus {
+            border-color: #c08593;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(192, 133, 147, 0.15);
+        }
+        .submit-btn {
+            width: 100%;
+            background: #F49BB1;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(244, 155, 177, 0.4);
+            box-sizing: border-box;
+            display: block;
+        }
+        .submit-btn:hover {
+            background: #e28ca2;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(244, 155, 177, 0.5);
+        }
+        .submit-btn:disabled {
+            background: #d8b4bc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .submit-btn:hover {
+            background: #b07482;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(192, 133, 147, 0.5);
+        }
+        .submit-btn:disabled {
+            background: #d8b4bc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h1>Линель.<br><span style="font-size: 16px; font-weight: normal; color: #8a7a7c; letter-spacing: 2px;">nails room</span></h1>
+        <form id="booking-form" onsubmit="sendData(event)">
+            <h2>1. Выберите услугу</h2>
+            <div class="service-option" onclick="selectService(this, 'Маникюр без покрытия (600 руб)')">
+                <div class="service-info">
+                    <span class="service-title">💅 Маникюр без покрытия</span>
+                    <span class="service-price">600 руб</span>
+                </div>
+                <div class="radio-circle"></div>
+            </div>
+            <div class="service-option" onclick="selectService(this, 'Маникюр с укреплением (1100 руб)')">
+                <div class="service-info">
+                    <span class="service-title">✨ Маникюр с укреплением</span>
+                    <span class="service-price">1100 руб</span>
+                </div>
+                <div class="radio-circle"></div>
+            </div>
+            <div class="service-option" onclick="selectService(this, 'Френч (1300 руб)')">
+                <div class="service-info">
+                    <span class="service-title">🌸 Френч</span>
+                    <span class="service-price">1300 руб</span>
+                </div>
+                <div class="radio-circle"></div>
+            </div>
+            <input type="hidden" id="service-input" required>
+            <h2>2. Данные для записи</h2>
+            <input type="text" id="name-input" placeholder="Ваше имя" required>
+            <input type="tel" id="phone-input" placeholder="Номер телефона" required>
+            <input type="datetime-local" id="date-input" required>
+            <button type="submit" id="submit-btn" class="submit-btn">
+                <span id="btn-text">Подтвердить запись</span>
+            </button>
+        </form>
+        <script>
+        function cleanExpiredRecords() {
+            let records = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
+            const now = new Date().getTime();
+            records = records.filter(slot => (now - new Date(slot).getTime()) < 24 * 60 * 60 * 1000);
+            localStorage.setItem('beauty_disabled_slots', JSON.stringify(records));
+        }
+        cleanExpiredRecords();
+
+        function selectService(element, serviceValue) {
+            document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('service-input').value = serviceValue;
+        }
+
+        document.getElementById('date-input').addEventListener('change', function(e) {
+            const disabledSlots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
+            if (disabledSlots.includes(e.target.value)) {
+                // Красивое кастомное окно ошибки вместо скучного алерта
+                const errModal = document.createElement('div');
+                errModal.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; border: 2px solid #ff4d6d; padding: 25px 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); z-index: 10000; text-align: center; font-family: sans-serif;";
+                errModal.innerHTML = `<h3 style="color: #ff4d6d; margin: 0 0 10px 0; font-size: 20px;">🔒 Окошко уже занято</h3><p style="color: #555; margin: 0 0 15px 0; font-size: 15px;">Извините, это время выбрал другой клиент.
+пожалуйста, подберите другую дату и время.</p><button onclick="this.parentElement.remove()" style="background: #ff4d6d; color: white; border: none; padding: 8px 25px; border-radius: 20px; cursor: pointer; font-weight: bold;">Выбрать другое</button>`;
+                document.body.appendChild(errModal);
+                e.target.value = "";
+                e.target.style.borderColor = "#ff4d6d";
+            } else {
+                e.target.style.borderColor = "#f2e6e8";
+            }
+        });
+        function sendData(event) {
+            event.preventDefault();
+            const service = document.getElementById('service-input').value;
+            if (!service) { return alert("Пожалуйста, выберите услугу!"); }
+
+            const datetime = document.getElementById('date-input').value;
+            const disabledSlots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
+            if (disabledSlots.includes(datetime)) { return alert("Это время уже занято!"); }
+
+            const btnText = document.getElementById('btn-text');
+            btnText.innerText = 'Отправка...';
+
+            const webhookUrl = "https://h.albato.ru/wh/38/1lf222b/c8RYy6ynbOGWySmnaIqBS8LgwuLq2bUK-3FmQyd5QKU/";
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: document.getElementById('name-input').value,
+                    phone: document.getElementById('phone-input').value,
+                    service: service,
+                    datetime: datetime
+                })
+            })
+            .then(() => {
+                let slots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
+                slots.push(datetime);
+                localStorage.setItem('beauty_disabled_slots', JSON.stringify(slots));
+
+                const msg = document.createElement('div');
+                msg.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; border: 2px solid #c08593; padding: 25px 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(216, 180, 188, 0.5); z-index: 10000; text-align: center; font-family: sans-serif;";
+                msg.innerHTML = `<h3 style="color: #c08593; margin: 0 0 10px 0; font-size: 22px;">✨ Успешная запись!</h3><p style="color: #555; margin: 0 0 15px 0;">Мастер уже ждет вас.</p><button onclick="this.parentElement.remove()" style="background: #c08593; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">Отлично</button>`;
+                document.body.appendChild(msg);
+
+                btnText.innerText = "Подтвердить запись";
+                document.getElementById('booking-form').reset();
+                document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
+            });
+        }
+    </script>
+</body>
+</html>

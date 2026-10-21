@@ -1,316 +1,2224 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Линель — Запись на маникюр</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Фирменные цвета Линель: розовый #F49BB1 и нежно-жёлтый #FFE6A3 */
-            background: linear-gradient(135deg, #F49BB1 0%, #FFE6A3 50%, #F49BB1 100%);
-            background-size: 300% 300%;
-            animation: gradientMove 8s ease-in-out infinite;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            box-sizing: border-box;
-        }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            width: 250px;
-            height: 250px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            z-index: 1;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
-            animation: flowerFloat 6s ease-in-out infinite;
-        }
-        body::before {
-            top: -30px;
-            left: -30px;
-            background-image: url('https://icons8.com');
-        }
-        body::after {
-            bottom: -30px;
-            right: -30px;
-            background-image: url('https://icons8.com');
-            transform: scaleX(-1) rotate(45deg);
-            animation-delay: -3s;
-        }
-        @keyframes flowerFloat {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
-            100% { transform: translateY(0) rotate(0deg); }
-        }
-        .booking-container {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(15px);
-            max-width: 450px;
-            width: 100%;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(138, 56, 75, 0.35);
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-sizing: border-box;
-        }
-        h1 {
-            color: #3a3032;
-            margin-top: 0;
-            margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-        h2 {
-            color: #4a3e40;
-            font-size: 18px;
-            margin-top: 25px;
-            margin-bottom: 12px;
-            text-align: left;
-            font-weight: 700;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        .service-option {
-            background: #fdf5f6;
-            border: 2px solid #f2e6e8;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-sizing: border-box;
-        }
-        .service-option:hover {
-            border-color: #d8b4bc;
-            background: #fffcfc;
-            transform: translateY(-1px);
-        }
-        .service-option.selected {
-            border-color: #c08593;
-            background: #fbf0f2;
-            box-shadow: 0 4px 12px rgba(216, 180, 188, 0.3);
-        }
-        .service-info {
-            display: flex;
-            flex-direction: column;
-        }
-        .service-title {
-            font-weight: bold;
-            color: #3a3032;
-            font-size: 16px;
-        }
-        .service-price {
-            font-size: 14px;
-            color: #c08593;
-            margin-top: 4px;font-weight: 600;
-        }
-        .radio-circle {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #d8b4bc;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .service-option.selected .radio-circle {
-            border-color: #c08593;
-            background: #c08593;
-        }
-        .service-option.selected .radio-circle::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-        }
-        input[type="text"], input[type="tel"], input[type="datetime-local"] {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 15px;
-            border: 2px solid #f2e6e8;
-            border-radius: 12px;
-            font-size: 16px;
-            color: #3a3032;
-            outline: none;
-            box-sizing: border-box;
-            transition: all 0.2s;
-            background: #fdf5f6;
-        }
-        input:focus {
-            border-color: #c08593;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(192, 133, 147, 0.15);
-        }
-        .submit-btn {
-            width: 100%;
-            background: #F49BB1;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
-            box-shadow: 0 6px 20px rgba(244, 155, 177, 0.4);
-            box-sizing: border-box;
-            display: block;
-        }
-        .submit-btn:hover {
-            background: #e28ca2;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(244, 155, 177, 0.5);
-        }
-        .submit-btn:disabled {
-            background: #d8b4bc;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-        .submit-btn:hover {
-            background: #b07482;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(192, 133, 147, 0.5);
-        }
-        .submit-btn:disabled {
-            background: #d8b4bc;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8f7">
+  <meta name="description" content="Выберите услугу и запишитесь в студию маникюра «Линель. nails room» в Ялте.">
+  <title>Линель. nails room — студия маникюра в Ялте</title>
+
+  <style>
+    :root {
+      color-scheme: light;
+      --ivory: #fffaf6;
+      --pink: #f7dbe4;
+      --pink-deep: #d8859c;
+      --rose: #af6879;
+      --rose-gold: #bd8c83;
+      --ink: #362d31;
+      --muted: #8d7a80;
+      --line: rgba(159, 112, 125, 0.16);
+      --shadow: 0 24px 70px rgba(114, 67, 82, 0.13);
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      min-height: 100%;
+      scroll-behavior: smooth;
+      background: var(--ivory);
+    }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 10% 10%, rgba(250, 220, 228, 0.76), transparent 37rem),
+        radial-gradient(ellipse at 92% 34%, rgba(238, 222, 211, 0.58), transparent 34rem),
+        radial-gradient(ellipse at 40% 95%, rgba(249, 230, 215, 0.56), transparent 36rem),
+        var(--ivory);
+      background-size: 150% 150%;
+      animation: backdropDrift 24s ease-in-out infinite alternate;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid rgba(200, 119, 144, 0.42);
+      outline-offset: 3px;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 0;
+      width: min(100%, 420px);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 0 18px 132px;
+      isolation: isolate;
+    }
+
+    .app-shell::before,
+    .app-shell::after {
+      position: fixed;
+      z-index: -1;
+      width: 310px;
+      height: 310px;
+      border: 1px solid rgba(189, 140, 131, 0.1);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .app-shell::before {
+      top: 11%;
+      left: calc(50% - 470px);
+      box-shadow: 0 0 0 28px rgba(255, 255, 255, 0.11), 0 0 0 58px rgba(189, 140, 131, 0.035);
+    }
+
+    .app-shell::after {
+      right: calc(50% - 470px);
+      bottom: 8%;
+      width: 420px;
+      height: 420px;
+      box-shadow: 0 0 0 34px rgba(247, 219, 228, 0.12), 0 0 0 78px rgba(189, 140, 131, 0.035);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 25px 0 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      min-width: 0;
+      align-items: center;
+      gap: 11px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      place-items: center;
+      border: 1px solid rgba(189, 140, 131, 0.27);
+      border-radius: 16px;
+      color: var(--rose);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(250, 229, 232, 0.84));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 7px 20px rgba(147, 90, 105, 0.1);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+    }
+
+    .brand-copy {
+      display: grid;
+      min-width: 0;
+      gap: 4px;
+    }
+
+    .brand-name {
+      overflow: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      letter-spacing: -0.5px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .brand-caption {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+    }
+
+    .location-pill {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 11px;
+      border: 1px solid rgba(189, 140, 131, 0.17);
+      border-radius: 999px;
+      color: #80646b;
+      background: rgba(255, 255, 255, 0.54);
+      font-size: 11px;
+      white-space: nowrap;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      position: relative;
+      padding: 22px 0 23px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--rose);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+    }
+
+    .hero-kicker::before {
+      width: 20px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-gold));
+      content: "";
+    }
+
+    .hero h1 {
+      max-width: 360px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(43px, 12vw, 58px);
+      font-weight: 400;
+      letter-spacing: -2.4px;
+      line-height: 0.99;
+    }
+
+    .hero h1 span {
+      color: var(--rose);
+      font-style: italic;
+    }
+
+    .hero-description {
+      max-width: 310px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .hero-stamp {
+      position: absolute;
+      top: 34px;
+      right: 2px;
+      display: grid;
+      width: 76px;
+      height: 76px;
+      place-items: center;
+      border: 1px solid rgba(189, 140, 131, 0.31);
+      border-radius: 50%;
+      color: var(--rose);
+      background: rgba(255, 252, 250, 0.55);
+      box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.44);
+      text-align: center;
+      transform: rotate(9deg);
+    }
+
+    .hero-stamp span {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .hero-stamp strong {
+      display: block;
+      margin-top: 3px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .search-wrap {
+      position: relative;
+      display: block;
+      margin-top: 25px;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 17px;
+      color: #9d8189;
+      font-size: 17px;
+      pointer-events: none;
+      transform: translateY(-50%);
+    }
+
+    .search-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 17px 0 47px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 18px;
+      outline: none;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.57);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 8px 24px rgba(113, 70, 83, 0.055);
+      backdrop-filter: blur(18px);
+      transition: border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+    }
+
+    .search-input::placeholder {
+      color: #ab999e;
+    }
+
+    .search-input:focus {
+      border-color: rgba(190, 126, 147, 0.5);
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 0 0 4px rgba(217, 133, 157, 0.1), 0 12px 30px rgba(113, 70, 83, 0.08);
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 26px 0 14px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 27px;
+      font-weight: 400;
+      letter-spacing: -0.8px;
+    }
+
+    .section-heading span {
+      padding-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 0 -18px 19px;
+      padding: 0 18px 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-padding-left: 18px;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-tab {
+      display: inline-flex;
+      min-height: 38px;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 13px;
+      border: 1px solid rgba(180, 132, 143, 0.16);
+      border-radius: 999px;
+      color: #826f75;
+      background: rgba(255, 255, 255, 0.46);
+      font-size: 11px;
+      transition: color 220ms ease, background 220ms ease, border-color 220ms ease, transform 220ms var(--ease);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .category-tab:hover {
+      transform: translate3d(0, -2px, 0);
+    }
+
+    .category-tab[aria-selected="true"] {
+      border-color: rgba(177, 103, 124, 0.38);
+      color: #fffaf9;
+      background: linear-gradient(135deg, #d995a8, #b97689);
+      box-shadow: 0 8px 19px rgba(169, 95, 117, 0.2);
+    }
+
+    .service-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .service-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 13px;
+      min-height: 123px;
+      padding: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(187, 137, 148, 0.18);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 250, 248, 0.82));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96), inset 0 -1px 0 rgba(189, 140, 131, 0.05), 0 8px 25px rgba(109, 69, 82, 0.06);
+      transition: transform 260ms var(--ease), border-color 260ms ease, box-shadow 260ms ease;
+      animation: cardReveal 420ms var(--ease) both;
+    }
+
+    .service-card:hover {
+      transform: translate3d(0, -3px, 0);
+      box-shadow: 0 12px 34px rgba(114, 67, 82, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    }
+
+    .service-card[hidden] {
+      display: none;
+    }
+
+    .service-card.is-selected {
+      border-color: rgba(200, 102, 133, 0.72);
+      box-shadow: 0 0 0 1px rgba(200, 102, 133, 0.18), 0 13px 32px rgba(184, 92, 122, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      animation: cardReveal 420ms var(--ease) both, selectedGlow 2.7s ease-in-out infinite;
+    }
+
+    .service-card.is-selected::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(112deg, transparent 10%, rgba(255, 255, 255, 0.58) 48%, transparent 78%);
+      content: "";
+      pointer-events: none;
+      transform: translate3d(-130%, 0, 0);
+      animation: shimmer 3.2s ease-in-out infinite;
+    }
+
+    .service-icon {
+      display: grid;
+      width: 62px;
+      height: 62px;
+      align-self: start;
+      place-items: center;
+      border: 1px solid rgba(189, 140, 131, 0.19);
+      border-radius: 19px;
+      background: linear-gradient(145deg, #fffaf9, #f8e4e8);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 5px 13px rgba(140, 89, 103, 0.08);
+      font-size: 25px;
+    }
+
+    .service-content {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 11px;
+    }
+
+    .service-title-row {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .service-title {
+      margin: 1px 0 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.25px;
+      line-height: 1.22;
+    }
+
+    .service-category {
+      flex: 0 0 auto;
+      padding: 5px 7px;
+      border: 1px solid rgba(183, 131, 144, 0.14);
+      border-radius: 999px;
+      color: #92747d;
+      background: rgba(250, 237, 239, 0.72);
+      font-size: 8px;
+      letter-spacing: 0.25px;
+    }
+
+    .service-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .service-price {
+      color: #604c52;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+    }
+
+    .select-button {
+      position: relative;
+      z-index: 1;
+      min-width: 91px;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(179, 112, 132, 0.35);
+      border-radius: 999px;
+      color: #a35f75;
+      background: rgba(255, 250, 249, 0.9);
+      font-size: 10px;
+      font-weight: 700;
+      transition: color 200ms ease, background 200ms ease, transform 180ms var(--ease), box-shadow 200ms ease;
+      cursor: pointer;
+    }
+
+    .select-button:hover {
+      transform: translate3d(0, -1px, 0);
+      box-shadow: 0 6px 14px rgba(169, 95, 117, 0.12);
+    }
+
+    .select-button:active,
+    .checkout-button:active,
+    .wizard-button:active {
+      transform: scale(0.96);
+    }
+
+    .service-card.is-selected .select-button {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, #ce8298, #ae647c);
+      box-shadow: 0 5px 13px rgba(169, 95, 117, 0.18);
+    }
+
+    .empty-state {
+      display: none;
+      padding: 28px 20px;
+      border: 1px dashed rgba(181, 129, 143, 0.35);
+      border-radius: 22px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.45);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .empty-state.is-visible {
+      display: block;
+    }
+
+    .studio-note {
+      margin: 22px 0 0;
+      padding: 15px 16px;
+      border: 1px solid rgba(189, 140, 131, 0.15);
+      border-radius: 19px;
+      color: #806b71;
+      background: rgba(255, 255, 255, 0.43);
+      font-size: 11px;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .studio-note strong {
+      color: var(--rose);
+      font-weight: 600;
+    }
+
+    .cart-dock {
+      position: fixed;
+      z-index: 5;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 15px 18px calc(15px + env(safe-area-inset-bottom));
+      visibility: hidden;
+      background: linear-gradient(180deg, rgba(255, 250, 246, 0), rgba(255, 250, 246, 0.86) 18%, rgba(255, 250, 246, 0.97));
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, 30px, 0);
+      transition: opacity 300ms ease, transform 380ms var(--ease), visibility 300ms ease;
+      will-change: transform, opacity;
+    }
+
+    .cart-dock.is-visible {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .cart-panel {
+      display: flex;
+      width: min(384px, 100%);
+      min-height: 70px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 auto;
+      padding: 12px 13px 12px 17px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 23px;
+      background: linear-gradient(135deg, rgba(255, 254, 252, 0.96), rgba(250, 229, 234, 0.96));
+      box-shadow: 0 16px 45px rgba(112, 65, 81, 0.2), inset 0 1px 0 #fff;
+      backdrop-filter: blur(18px);
+    }
+
+    .cart-summary {
+      display: grid;
+      min-width: 0;
+      gap: 4px;
+    }
+
+    .cart-caption {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .cart-total {
+      color: #584249;
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: -0.8px;
+      line-height: 1;
+    }
+
+    .cart-count {
+      overflow: hidden;
+      max-width: 195px;
+      color: #947e84;
+      font-size: 9px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .checkout-button,
+    .wizard-button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      color: #fffdfa;
+      background: linear-gradient(135deg, #cb8196, #a95f77);
+      box-shadow: 0 8px 19px rgba(169, 95, 117, 0.23), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      font-size: 12px;
+      font-weight: 700;
+      transition: transform 180ms var(--ease), box-shadow 220ms ease, filter 220ms ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .checkout-button:hover,
+    .wizard-button:hover {
+      filter: saturate(1.07) brightness(1.04);
+      box-shadow: 0 11px 24px rgba(169, 95, 117, 0.3);
+      transform: translate3d(0, -2px, 0);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      padding: 18px;
+      visibility: hidden;
+      background: rgba(49, 36, 41, 0.42);
+      opacity: 0;
+      place-items: center;
+      backdrop-filter: blur(8px);
+      transition: opacity 260ms ease, visibility 260ms ease;
+    }
+
+    .modal-backdrop.is-open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .wizard-modal {
+      position: relative;
+      width: min(100%, 390px);
+      max-height: min(88vh, 760px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      border-radius: 29px;
+      background: radial-gradient(ellipse at top right, rgba(247, 219, 228, 0.52), transparent 19rem), rgba(255, 250, 247, 0.97);
+      box-shadow: 0 28px 90px rgba(37, 25, 30, 0.3), inset 0 1px 0 #fff;
+      opacity: 0;
+      transform: translate3d(0, 24px, 0) scale(0.97);
+      transition: opacity 280ms ease, transform 320ms var(--ease);
+      will-change: transform, opacity;
+      scrollbar-width: thin;
+    }
+
+    .modal-backdrop.is-open .wizard-modal {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(189, 140, 131, 0.13);
+      border-radius: 50%;
+      color: #876f76;
+      background: rgba(255, 255, 255, 0.75);
+      font-size: 21px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .modal-close:hover {
+      background: #f8e5ea;
+      transform: rotate(90deg);
+    }
+
+    .wizard-header {
+      padding: 2px 40px 0 0;
+    }
+
+    .wizard-eyebrow {
+      margin: 0 0 7px;
+      color: var(--rose);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .wizard-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.8px;
+    }
+
+    .wizard-subtitle {
+      margin: 8px 0 17px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 17px;
+    }
+
+    .step-dot {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #a38c92;
+      font-size: 9px;
+      transition: color 200ms ease;
+    }
+
+    .step-dot::before {
+      display: grid;
+      width: 22px;
+      height: 22px;
+      place-items: center;
+      border: 1px solid rgba(175, 120, 137, 0.24);
+      border-radius: 50%;
+      color: #a17f89;
+      background: rgba(255, 255, 255, 0.72);
+      content: attr(data-step);
+      font-size: 9px;
+    }
+
+    .step-dot.is-active {
+      color: var(--rose);
+      font-weight: 700;
+    }
+
+    .step-dot.is-active::before,
+    .step-dot.is-complete::before {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, #cb8196, #a95f77);
+      box-shadow: 0 4px 10px rgba(169, 95, 117, 0.19);
+    }
+
+    .step-divider {
+      width: 26px;
+      height: 1px;
+      background: rgba(177, 128, 142, 0.25);
+    }
+
+    .receipt {
+      position: relative;
+      padding: 18px 17px 16px;
+      border: 1px solid rgba(189, 140, 131, 0.17);
+      border-radius: 5px 5px 14px 14px;
+      background: linear-gradient(90deg, rgba(189, 140, 131, 0.035) 1px, transparent 1px), #fffefa;
+      background-size: 5px 100%;
+      box-shadow: 0 9px 22px rgba(112, 71, 81, 0.08), inset 0 1px 0 #fff;
+    }
+
+    .receipt::after {
+      position: absolute;
+      right: -1px;
+      bottom: -6px;
+      left: -1px;
+      height: 7px;
+      background:
+        linear-gradient(135deg, #fffefa 50%, transparent 50%) 0 0 / 12px 12px repeat-x,
+        linear-gradient(225deg, #fffefa 50%, transparent 50%) 6px 0 / 12px 12px repeat-x;
+      content: "";
+    }
+
+    .receipt-brand {
+      margin: 0;
+      color: #7f535f;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .receipt-location {
+      margin: 4px 0 14px;
+      color: #a28c91;
+      font-size: 8px;
+      letter-spacing: 1.1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .receipt-rule {
+      height: 1px;
+      margin: 10px 0;
+      background-image: linear-gradient(to right, rgba(139, 111, 118, 0.45) 45%, transparent 0%);
+      background-position: bottom;
+      background-size: 5px 1px;
+      background-repeat: repeat-x;
+    }
+
+    .receipt-items {
+      display: grid;
+      gap: 10px;
+    }
+
+    .receipt-item {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+      color: #65565b;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .receipt-item-name {
+      max-width: 220px;
+    }
+
+    .receipt-item-price {
+      color: #584249;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .receipt-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #584249;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .receipt-total-price {
+      color: #a75d75;
+      font-size: 17px;
+      letter-spacing: -0.4px;
+    }
+
+    .receipt-footnote {
+      margin: 13px 0 0;
+      color: #a28c91;
+      font-size: 8px;
+      letter-spacing: 0.8px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .wizard-actions {
+      display: flex;
+      gap: 9px;
+      margin-top: 19px;
+    }
+
+    .wizard-button {
+      flex: 1;
+      min-height: 44px;
+      font-size: 11px;
+    }
+
+    .wizard-button.secondary {
+      border: 1px solid rgba(176, 125, 140, 0.25);
+      color: #896c75;
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: none;
+    }
+
+    .wizard-button.secondary:hover {
+      background: #fff;
+      box-shadow: 0 7px 17px rgba(112, 71, 81, 0.08);
+    }
+
+    .time-hint {
+      margin: -3px 0 0;
+      color: #987e86;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .booking-form {
+      display: grid;
+      gap: 11px;
+      margin-top: 16px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .form-field label {
+      color: #735e65;
+      font-size: 10px;
+      font-weight: 650;
+    }
+
+    .form-field input,
+    .form-field select {
+      width: 100%;
+      height: 43px;
+      padding: 0 12px;
+      border: 1px solid rgba(174, 129, 140, 0.22);
+      border-radius: 13px;
+      outline: none;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.78);
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .form-field input::placeholder {
+      color: #b4a4a8;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus {
+      border-color: rgba(190, 126, 147, 0.7);
+      box-shadow: 0 0 0 3px rgba(217, 133, 157, 0.1);
+    }
+
+    .form-field select:disabled {
+      color: #a99ba0;
+      background: rgba(245, 239, 239, 0.76);
+    }
+
+    .form-error {
+      display: none;
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border: 1px solid rgba(179, 86, 98, 0.17);
+      border-radius: 12px;
+      color: #934b59;
+      background: #fff0f1;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .form-error.is-visible {
+      display: block;
+    }
+
+    .submit-button {
+      width: 100%;
+      margin-top: 3px;
+    }
+
+    .privacy-note {
+      margin: 10px 0 0;
+      color: #a18d92;
+      font-size: 8px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .step-two-content {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 260ms ease, transform 260ms var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .form-area.is-success .step-two-content {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, -8px, 0);
+    }
+
+    .success-screen {
+      display: none;
+      padding: 24px 5px 6px;
+      text-align: center;
+    }
+
+    .success-screen.is-visible {
+      display: block;
+      animation: successReveal 420ms var(--ease) both;
+    }
+
+    .success-mark {
+      display: grid;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      place-items: center;
+      border: 1px solid rgba(186, 129, 144, 0.22);
+      border-radius: 26px;
+      color: #fff;
+      background: linear-gradient(145deg, #d89aab, #b76f85);
+      box-shadow: 0 14px 30px rgba(169, 95, 117, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      font-size: 32px;
+      animation: successPop 560ms var(--ease) both;
+    }
+
+    .success-screen h3 {
+      margin: 0 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 400;
+      letter-spacing: -0.6px;
+    }
+
+    .success-screen p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .success-screen .wizard-button {
+      width: 100%;
+      margin-top: 20px;
+      color: #fff;
+      background: linear-gradient(135deg, #514248, #342b30);
+      box-shadow: 0 9px 21px rgba(50, 38, 44, 0.2);
+    }
+
+    .alert-backdrop {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      display: grid;
+      padding: 20px;
+      visibility: hidden;
+      background: rgba(49, 36, 41, 0.38);
+      opacity: 0;
+      place-items: center;
+      backdrop-filter: blur(12px);
+      transition: opacity 240ms ease, visibility 240ms ease;
+    }
+
+    .alert-backdrop.is-open {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .alert-modal {
+      width: min(100%, 350px);
+      padding: 27px 23px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255, 252, 250, 0.94), rgba(255, 236, 241, 0.86));
+      box-shadow: 0 26px 80px rgba(53, 34, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      text-align: center;
+      opacity: 0;
+      transform: translate3d(0, 18px, 0) scale(0.97);
+      transition: opacity 250ms ease, transform 300ms var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .alert-backdrop.is-open .alert-modal {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .alert-icon {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 17px;
+      place-items: center;
+      border: 1px solid rgba(193, 133, 151, 0.24);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(249, 222, 230, 0.92));
+      box-shadow: 0 10px 26px rgba(169, 95, 117, 0.13), inset 0 1px 0 #fff;
+      font-size: 29px;
+      animation: alertBreathe 2.6s ease-in-out infinite;
+    }
+
+    .alert-modal h2 {
+      margin: 0 0 9px;
+      color: #533e46;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.4px;
+    }
+
+    .alert-modal p {
+      margin: 0;
+      color: #806d73;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .alert-button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 21px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 999px;
+      color: #fffdfa;
+      background: linear-gradient(135deg, #c98197, #a85f77);
+      box-shadow: 0 9px 22px rgba(169, 95, 117, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 180ms var(--ease), box-shadow 200ms ease;
+    }
+
+    .alert-button:hover {
+      box-shadow: 0 12px 26px rgba(169, 95, 117, 0.29);
+      transform: translate3d(0, -2px, 0);
+    }
+
+    @keyframes backdropDrift {
+      0% {
+        background-position: 0% 0%, 100% 40%, 45% 100%;
+      }
+      100% {
+        background-position: 12% 8%, 88% 55%, 55% 88%;
+      }
+    }
+
+    @keyframes cardReveal {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes selectedGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 1px rgba(200, 102, 133, 0.16), 0 12px 28px rgba(184, 92, 122, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      50% {
+        box-shadow: 0 0 0 2px rgba(200, 102, 133, 0.23), 0 13px 36px rgba(184, 92, 122, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+    }
+
+    @keyframes shimmer {
+      0%, 48% {
+        transform: translate3d(-130%, 0, 0);
+      }
+      75%, 100% {
+        transform: translate3d(130%, 0, 0);
+      }
+    }
+
+    @keyframes successReveal {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes successPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.7) rotate(-10deg);
+      }
+      70% {
+        transform: scale(1.08) rotate(3deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    @keyframes alertBreathe {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 26px rgba(169, 95, 117, 0.13), inset 0 1px 0 #fff;
+      }
+      50% {
+        transform: scale(1.045);
+        box-shadow: 0 13px 32px rgba(169, 95, 117, 0.2), inset 0 1px 0 #fff;
+      }
+    }
+
+    @media (min-width: 600px) {
+      body {
+        display: grid;
+        min-height: 100vh;
+        place-items: start center;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        border-right: 1px solid rgba(255, 255, 255, 0.45);
+        border-left: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(255, 250, 247, 0.32);
+        box-shadow: 0 0 80px rgba(121, 79, 92, 0.06);
+        backdrop-filter: blur(2px);
+      }
+
+      .hero {
+        padding-top: 29px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .app-shell {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .category-tabs {
+        margin-right: -14px;
+        margin-left: -14px;
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .hero-stamp {
+        right: 0;
+        width: 67px;
+        height: 67px;
+      }
+
+      .hero h1 {
+        max-width: 290px;
+        font-size: 43px;
+      }
+
+      .service-card {
+        grid-template-columns: 55px minmax(0, 1fr);
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .service-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 17px;
+      }
+
+      .service-title {
+        font-size: 15px;
+      }
+
+      .service-category {
+        font-size: 7px;
+      }
+
+      .cart-panel {
+        padding-left: 13px;
+      }
+
+      .checkout-button {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .cart-dock,
+      .wizard-modal,
+      .alert-modal,
+      .step-two-content {
+        will-change: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="booking-container">
-        <h1>Линель.<br><span style="font-size: 16px; font-weight: normal; color: #8a7a7c; letter-spacing: 2px;">nails room</span></h1>
-        <form id="booking-form" onsubmit="sendData(event)">
-            <h2>1. Выберите услугу</h2>
-            <div class="service-option" onclick="selectService(this, 'Маникюр без покрытия (600 руб)')">
-                <div class="service-info">
-                    <span class="service-title">💅 Маникюр без покрытия</span>
-                    <span class="service-price">600 руб</span>
-                </div>
-                <div class="radio-circle"></div>
-            </div>
-            <div class="service-option" onclick="selectService(this, 'Маникюр с укреплением (1100 руб)')">
-                <div class="service-info">
-                    <span class="service-title">✨ Маникюр с укреплением</span>
-                    <span class="service-price">1100 руб</span>
-                </div>
-                <div class="radio-circle"></div>
-            </div>
-            <div class="service-option" onclick="selectService(this, 'Френч (1300 руб)')">
-                <div class="service-info">
-                    <span class="service-title">🌸 Френч</span>
-                    <span class="service-price">1300 руб</span>
-                </div>
-                <div class="radio-circle"></div>
-            </div>
-            <input type="hidden" id="service-input" required>
-            <h2>2. Данные для записи</h2>
-            <input type="text" id="name-input" placeholder="Ваше имя" required>
-            <input type="tel" id="phone-input" placeholder="Номер телефона" required>
-            <input type="datetime-local" id="date-input" required>
-            <button type="submit" id="submit-btn" class="submit-btn">
-                <span id="btn-text">Подтвердить запись</span>
-            </button>
-        </form>
-        <script>
-        function cleanExpiredRecords() {
-            let records = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
-            const now = new Date().getTime();
-            records = records.filter(slot => (now - new Date(slot).getTime()) < 24 * 60 * 60 * 1000);
-            localStorage.setItem('beauty_disabled_slots', JSON.stringify(records));
-        }
-        cleanExpiredRecords();
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Линель. nails room — начало страницы">
+        <span class="brand-mark" aria-hidden="true">Л</span>
+        <span class="brand-copy">
+          <span class="brand-name">Линель. nails room</span>
+          <span class="brand-caption">студия маникюра</span>
+        </span>
+      </a>
+      <div class="location-pill" aria-label="Ялта">⌖ <span>Ялта</span></div>
+    </header>
 
-        function selectService(element, serviceValue) {
-            document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            document.getElementById('service-input').value = serviceValue;
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-kicker">пространство красоты</div>
+      <h1 id="hero-title">Нежность<br>до кончиков <span>пальцев</span></h1>
+      <p class="hero-description">
+        Выбери свою услугу, почувствуй заботу и подари себе красивое настроение.
+      </p>
+      <div class="hero-stamp" aria-label="Уход с любовью">
+        <span>уход<strong>с любовью</strong></span>
+      </div>
+
+      <label class="search-wrap">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          class="search-input"
+          id="serviceSearch"
+          type="search"
+          placeholder="Найти услугу…"
+          autocomplete="off"
+          aria-label="Поиск услуг"
+        >
+      </label>
+    </section>
+
+    <section aria-labelledby="services-title">
+      <div class="section-heading">
+        <h2 id="services-title">Меню красоты</h2>
+        <span>выбери свой ритуал</span>
+      </div>
+
+      <nav class="category-tabs" aria-label="Категории услуг" role="tablist">
+        <button class="category-tab" type="button" role="tab" aria-selected="true" data-category="all">Все</button>
+        <button class="category-tab" type="button" role="tab" aria-selected="false" data-category="Маникюр">💅 Маникюр</button>
+        <button class="category-tab" type="button" role="tab" aria-selected="false" data-category="Покрытие">✨ Покрытие</button>
+        <button class="category-tab" type="button" role="tab" aria-selected="false" data-category="Наращивание">💎 Наращивание</button>
+      </nav>
+
+      <div class="service-list" id="serviceList">
+        <article class="service-card" data-category="Маникюр" data-name="Маникюр без покрытия">
+          <div class="service-icon" aria-hidden="true">💅</div>
+          <div class="service-content">
+            <div class="service-title-row">
+              <h3 class="service-title">Маникюр без покрытия</h3>
+              <span class="service-category">маникюр</span>
+            </div>
+            <div class="service-bottom">
+              <span class="service-price" data-price="600">600 ₽</span>
+              <button class="select-button" type="button" aria-pressed="false">Выбрать</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" data-category="Покрытие" data-name="Маникюр с укреплением">
+          <div class="service-icon" aria-hidden="true">✨</div>
+          <div class="service-content">
+            <div class="service-title-row">
+              <h3 class="service-title">Маникюр с укреплением</h3>
+              <span class="service-category">покрытие</span>
+            </div>
+            <div class="service-bottom">
+              <span class="service-price" data-price="1100">1 100 ₽</span>
+              <button class="select-button" type="button" aria-pressed="false">Выбрать</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" data-category="Покрытие" data-name="Дизайн Френч">
+          <div class="service-icon" aria-hidden="true">🌸</div>
+          <div class="service-content">
+            <div class="service-title-row">
+              <h3 class="service-title">Дизайн Френч</h3>
+              <span class="service-category">покрытие</span>
+            </div>
+            <div class="service-bottom">
+              <span class="service-price" data-price="1300">1 300 ₽</span>
+              <button class="select-button" type="button" aria-pressed="false">Выбрать</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="service-card" data-category="Наращивание" data-name="Наращивание ногтей">
+          <div class="service-icon" aria-hidden="true">💎</div>
+          <div class="service-content">
+            <div class="service-title-row">
+              <h3 class="service-title">Наращивание ногтей</h3>
+              <span class="service-category">наращивание</span>
+            </div>
+            <div class="service-bottom">
+              <span class="service-price" data-price="1600">1 600 ₽</span>
+              <button class="select-button" type="button" aria-pressed="false">Выбрать</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-state" id="emptyState" role="status">
+        По вашему запросу ничего не найдено.<br>Попробуйте изменить поиск или категорию.
+      </div>
+
+      <p class="studio-note">
+        <strong>Линель. nails room</strong> · бережный уход, эстетика и немного времени только для себя.
+      </p>
+    </section>
+  </main>
+
+  <aside class="cart-dock" id="cartDock" aria-label="Корзина записи" aria-live="polite">
+    <div class="cart-panel">
+      <div class="cart-summary">
+        <span class="cart-caption">ваша запись</span>
+        <span class="cart-total" id="cartTotal">0 ₽</span>
+        <span class="cart-count" id="cartCount">Выберите услугу</span>
+      </div>
+      <button class="checkout-button" id="openWizard" type="button">
+        Записаться <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="modal-backdrop" id="wizardBackdrop" aria-hidden="true">
+    <section class="wizard-modal" role="dialog" aria-modal="true" aria-labelledby="wizardTitle" aria-describedby="wizardSubtitle">
+      <button class="modal-close" id="closeWizard" type="button" aria-label="Закрыть окно">×</button>
+
+      <header class="wizard-header">
+        <p class="wizard-eyebrow">Линель. nails room · Ялта</p>
+        <h2 class="wizard-title" id="wizardTitle">Ваша запись</h2>
+        <p class="wizard-subtitle" id="wizardSubtitle">Проверьте детали и выберите удобное время.</p>
+      </header>
+
+      <div class="step-indicator" aria-label="Шаги записи">
+        <span class="step-dot is-active" id="stepOneDot" data-step="1">Чек</span>
+        <span class="step-divider" aria-hidden="true"></span>
+        <span class="step-dot" id="stepTwoDot" data-step="2">Данные</span>
+      </div>
+
+      <div class="wizard-step" id="stepOne">
+        <div class="receipt" aria-label="Чек выбранных услуг">
+          <p class="receipt-brand">Линель. nails room</p>
+          <p class="receipt-location">beauty receipt · Ялта</p>
+          <div class="receipt-rule"></div>
+          <div class="receipt-items" id="receiptItems"></div>
+          <div class="receipt-rule"></div>
+          <div class="receipt-total-row">
+            <span>Итого</span>
+            <span class="receipt-total-price" id="receiptTotal">0 ₽</span>
+          </div>
+          <p class="receipt-footnote">спасибо, что выбираете нас</p>
+        </div>
+        <div class="wizard-actions">
+          <button class="wizard-button secondary" id="backToServices" type="button">Изменить выбор</button>
+          <button class="wizard-button" id="continueToForm" type="button">Продолжить →</button>
+        </div>
+      </div>
+
+      <div class="wizard-step form-area" id="stepTwo" hidden>
+        <div class="receipt" aria-label="Краткое подтверждение выбранных услуг">
+          <p class="receipt-brand">Ваш beauty-чек</p>
+          <div class="receipt-rule"></div>
+          <div class="receipt-items" id="compactReceiptItems"></div>
+          <div class="receipt-rule"></div>
+          <div class="receipt-total-row">
+            <span>Итого</span>
+            <span class="receipt-total-price" id="compactReceiptTotal">0 ₽</span>
+          </div>
+        </div>
+
+        <div class="step-two-content">
+          <form class="booking-form" id="bookingForm">
+            <div class="form-field">
+              <label for="clientName">Имя</label>
+              <input id="clientName" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Как к вам обращаться?" required>
+            </div>
+
+            <div class="form-field">
+              <label for="clientPhone">Телефон</label>
+              <input id="clientPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="+7 (___) ___-__-__" required>
+            </div>
+
+            <div class="form-field">
+              <label for="appointmentDate">Дата</label>
+              <input id="appointmentDate" name="date" type="date" required>
+            </div>
+
+            <div class="form-field">
+              <label for="appointmentTime">Время</label>
+              <select id="appointmentTime" name="time" required disabled aria-describedby="timeHint">
+                <option value="">Сначала выберите дату</option>
+              </select>
+            </div>
+
+            <p class="time-hint" id="timeHint">Доступные интервалы: каждые 30 минут с 09:00 до 21:00.</p>
+            <p class="form-error" id="formError" role="alert"></p>
+
+            <button class="wizard-button submit-button" id="submitBooking" type="submit">Отправить заявку</button>
+          </form>
+          <p class="privacy-note">Нажимая кнопку, вы отправляете данные для связи и подтверждения записи.</p>
+        </div>
+
+        <div class="success-screen" id="successScreen" aria-live="polite">
+          <div class="success-mark" aria-hidden="true">✓</div>
+          <h3>Спасибо за заявку! 🎉</h3>
+          <p>Ваши данные успешно отправлены. Мы свяжемся с Вами в WhatsApp для подтверждения визита.</p>
+          <button class="wizard-button" id="dismissSuccess" type="button">Отлично</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="alert-backdrop" id="slotAlertBackdrop" aria-hidden="true">
+    <section class="alert-modal" role="alertdialog" aria-modal="true" aria-labelledby="slotAlertTitle" aria-describedby="slotAlertText">
+      <div class="alert-icon" aria-hidden="true">🌸</div>
+      <h2 id="slotAlertTitle">Упс!</h2>
+      <p id="slotAlertText">Это время уже забронировано 🌸 Пожалуйста, выберите другое удобное время для визита.</p>
+      <button class="alert-button" id="dismissSlotAlert" type="button">Хорошо</button>
+    </section>
+  </div>
+
+  <script>
+    const ALABABOT_URL = 'https://h.albato.ru/wh/38/1lf222b/c8RYy6ynbOGWySmnaIqBS8LgwuLq2bUK-3FmQyd5QKU/';
+
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "linelNailsBookedSlotsV1";
+      const serviceCards = Array.from(document.querySelectorAll(".service-card"));
+      const categoryTabs = Array.from(document.querySelectorAll(".category-tab"));
+      const searchInput = document.getElementById("serviceSearch");
+      const emptyState = document.getElementById("emptyState");
+      const cartDock = document.getElementById("cartDock");
+      const cartTotal = document.getElementById("cartTotal");
+      const cartCount = document.getElementById("cartCount");
+      const openWizardButton = document.getElementById("openWizard");
+      const wizardBackdrop = document.getElementById("wizardBackdrop");
+      const closeWizardButton = document.getElementById("closeWizard");
+      const stepOne = document.getElementById("stepOne");
+      const stepTwo = document.getElementById("stepTwo");
+      const stepOneDot = document.getElementById("stepOneDot");
+      const stepTwoDot = document.getElementById("stepTwoDot");
+      const continueToFormButton = document.getElementById("continueToForm");
+      const backToServicesButton = document.getElementById("backToServices");
+      const receiptItems = document.getElementById("receiptItems");
+      const receiptTotal = document.getElementById("receiptTotal");
+      const compactReceiptItems = document.getElementById("compactReceiptItems");
+      const compactReceiptTotal = document.getElementById("compactReceiptTotal");
+      const bookingForm = document.getElementById("bookingForm");
+      const formArea = document.getElementById("stepTwo");
+      const formError = document.getElementById("formError");
+      const submitBookingButton = document.getElementById("submitBooking");
+      const successScreen = document.getElementById("successScreen");
+      const dismissSuccessButton = document.getElementById("dismissSuccess");
+      const clientNameInput = document.getElementById("clientName");
+      const appointmentDateInput = document.getElementById("appointmentDate");
+      const appointmentTimeSelect = document.getElementById("appointmentTime");
+      const timeHint = document.getElementById("timeHint");
+      const slotAlertBackdrop = document.getElementById("slotAlertBackdrop");
+      const dismissSlotAlertButton = document.getElementById("dismissSlotAlert");
+
+      const selectedServices = new Map();
+      let activeCategory = "all";
+      let previousWizardFocus = null;
+      let previousAlertFocus = null;
+      let requestInProgress = false;
+      let refreshTimeSlotsTimer = 0;
+
+      function formatPrice(amount) {
+        return new Intl.NumberFormat("ru-RU").format(amount) + " ₽";
+      }
+
+      function getSelectedServices() {
+        return Array.from(selectedServices.values());
+      }
+
+      function getTotal() {
+        return getSelectedServices().reduce((sum, service) => sum + service.price, 0);
+      }
+
+      function getLocalDateString(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return year + "-" + month + "-" + day;
+      }
+
+      function formatDateForMessage(dateString) {
+        const parts = dateString.split("-");
+        if (parts.length !== 3) {
+          return dateString;
         }
 
-        document.getElementById('date-input').addEventListener('change', function(e) {
-            const disabledSlots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
-            if (disabledSlots.includes(e.target.value)) {
-                // Красивое кастомное окно ошибки вместо скучного алерта
-                const errModal = document.createElement('div');
-                errModal.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; border: 2px solid #ff4d6d; padding: 25px 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25); z-index: 10000; text-align: center; font-family: sans-serif;";
-                errModal.innerHTML = `<h3 style="color: #ff4d6d; margin: 0 0 10px 0; font-size: 20px;">🔒 Окошко уже занято</h3><p style="color: #555; margin: 0 0 15px 0; font-size: 15px;">Извините, это время выбрал другой клиент.
-пожалуйста, подберите другую дату и время.</p><button onclick="this.parentElement.remove()" style="background: #ff4d6d; color: white; border: none; padding: 8px 25px; border-radius: 20px; cursor: pointer; font-weight: bold;">Выбрать другое</button>`;
-                document.body.appendChild(errModal);
-                e.target.value = "";
-                e.target.style.borderColor = "#ff4d6d";
-            } else {
-                e.target.style.borderColor = "#f2e6e8";
-            }
+        return parts[2] + "." + parts[1] + "." + parts[0];
+      }
+
+      function renderReceipt(container) {
+        const fragment = document.createDocumentFragment();
+
+        getSelectedServices().forEach(service => {
+          const row = document.createElement("div");
+          row.className = "receipt-item";
+
+          const name = document.createElement("span");
+          name.className = "receipt-item-name";
+          name.textContent = service.name;
+
+          const price = document.createElement("span");
+          price.className = "receipt-item-price";
+          price.textContent = formatPrice(service.price);
+
+          row.append(name, price);
+          fragment.append(row);
         });
-        function sendData(event) {
-            event.preventDefault();
-            const service = document.getElementById('service-input').value;
-            if (!service) { return alert("Пожалуйста, выберите услугу!"); }
 
-            const datetime = document.getElementById('date-input').value;
-            const disabledSlots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
-            if (disabledSlots.includes(datetime)) { return alert("Это время уже занято!"); }
+        container.replaceChildren(fragment);
+      }
 
-            const btnText = document.getElementById('btn-text');
-            btnText.innerText = 'Отправка...';
+      function updateCart() {
+        const services = getSelectedServices();
+        const total = getTotal();
 
-            const webhookUrl = "https://h.albato.ru/wh/38/1lf222b/c8RYy6ynbOGWySmnaIqBS8LgwuLq2bUK-3FmQyd5QKU/";
+        cartTotal.textContent = formatPrice(total);
+        cartCount.textContent = services.length
+          ? services.map(service => service.name).join(" · ")
+          : "Выберите услугу";
 
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: document.getElementById('name-input').value,
-                    phone: document.getElementById('phone-input').value,
-                    service: service,
-                    datetime: datetime
-                })
-            })
-            .then(() => {
-                let slots = JSON.parse(localStorage.getItem('beauty_disabled_slots')) || [];
-                slots.push(datetime);
-                localStorage.setItem('beauty_disabled_slots', JSON.stringify(slots));
+        cartDock.classList.toggle("is-visible", services.length > 0);
+        openWizardButton.disabled = services.length === 0;
 
-                const msg = document.createElement('div');
-                msg.style.cssText = "position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #ffffff; border: 2px solid #c08593; padding: 25px 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(216, 180, 188, 0.5); z-index: 10000; text-align: center; font-family: sans-serif;";
-                msg.innerHTML = `<h3 style="color: #c08593; margin: 0 0 10px 0; font-size: 22px;">✨ Успешная запись!</h3><p style="color: #555; margin: 0 0 15px 0;">Мастер уже ждет вас.</p><button onclick="this.parentElement.remove()" style="background: #c08593; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">Отлично</button>`;
-                document.body.appendChild(msg);
+        renderReceipt(receiptItems);
+        renderReceipt(compactReceiptItems);
+        receiptTotal.textContent = formatPrice(total);
+        compactReceiptTotal.textContent = formatPrice(total);
+      }
 
-                btnText.innerText = "Подтвердить запись";
-                document.getElementById('booking-form').reset();
-                document.querySelectorAll('.service-option').forEach(opt => opt.classList.remove('selected'));
-            });
+      function applyFilters() {
+        const query = searchInput.value.trim().toLocaleLowerCase("ru");
+        let visibleCount = 0;
+
+        serviceCards.forEach(card => {
+          const categoryMatches = activeCategory === "all" || card.dataset.category === activeCategory;
+          const searchMatches = card.dataset.name.toLocaleLowerCase("ru").includes(query);
+          const isVisible = categoryMatches && searchMatches;
+
+          card.hidden = !isVisible;
+          if (isVisible) {
+            visibleCount += 1;
+          }
+        });
+
+        emptyState.classList.toggle("is-visible", visibleCount === 0);
+      }
+
+      function readBookedSlots() {
+        try {
+          const storedValue = window.localStorage.getItem(STORAGE_KEY);
+          if (!storedValue) {
+            return [];
+          }
+
+          const parsedValue = JSON.parse(storedValue);
+          if (!Array.isArray(parsedValue)) {
+            return [];
+          }
+
+          return parsedValue.filter(value => typeof value === "string");
+        } catch (error) {
+          return null;
         }
-    </script>
+      }
+
+      function createSlotSnapshot(date, time) {
+        return JSON.stringify({ date: date, time: time });
+      }
+
+      function isSlotBooked(date, time) {
+        const bookedSlots = readBookedSlots();
+
+        if (bookedSlots === null) {
+          return { unavailable: true, booked: false };
+        }
+
+        return {
+          unavailable: false,
+          booked: bookedSlots.includes(createSlotSnapshot(date, time))
+        };
+      }
+
+      function saveSlotSnapshot(date, time) {
+        const bookedSlots = readBookedSlots();
+
+        if (bookedSlots === null) {
+          return { saved: false, duplicate: false };
+        }
+
+        const snapshot = createSlotSnapshot(date, time);
+
+        if (bookedSlots.includes(snapshot)) {
+          return { saved: false, duplicate: true };
+        }
+
+        bookedSlots.push(snapshot);
+
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(bookedSlots));
+          const savedSlots = readBookedSlots();
+
+          if (savedSlots === null || !savedSlots.includes(snapshot)) {
+            return { saved: false, duplicate: false };
+          }
+
+          return { saved: true, duplicate: false };
+        } catch (error) {
+          return { saved: false, duplicate: false };
+        }
+      }
+
+      function removeSlotSnapshot(date, time) {
+        const bookedSlots = readBookedSlots();
+
+        if (bookedSlots === null) {
+          return false;
+        }
+
+        const snapshot = createSlotSnapshot(date, time);
+        const filteredSlots = bookedSlots.filter(value => value !== snapshot);
+
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredSlots));
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function showFormError(message) {
+        formError.textContent = message;
+        formError.classList.add("is-visible");
+      }
+
+      function clearFormError() {
+        formError.textContent = "";
+        formError.classList.remove("is-visible");
+      }
+
+      function updateTimeSlots() {
+        const selectedDate = appointmentDateInput.value;
+        const existingValue = appointmentTimeSelect.value;
+        const fragment = document.createDocumentFragment();
+        const prompt = document.createElement("option");
+
+        prompt.value = "";
+        prompt.textContent = selectedDate ? "Выберите время" : "Сначала выберите дату";
+        prompt.selected = true;
+        prompt.disabled = true;
+        fragment.append(prompt);
+
+        if (!selectedDate) {
+          appointmentTimeSelect.replaceChildren(fragment);
+          appointmentTimeSelect.disabled = true;
+          timeHint.textContent = "Доступные интервалы: каждые 30 минут с 09:00 до 21:00.";
+          return;
+        }
+
+        const now = new Date();
+        const todayString = getLocalDateString(now);
+        const isToday = selectedDate === todayString;
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+        let availableCount = 0;
+        let previousSelectionStillAvailable = false;
+
+        for (let minutes = 9 * 60; minutes <= 21 * 60; minutes += 30) {
+          if (isToday && minutes <= currentMinutes) {
+            continue;
+          }
+
+          const hours = String(Math.floor(minutes / 60)).padStart(2, "0");
+          const minutePart = String(minutes % 60).padStart(2, "0");
+          const timeValue = hours + ":" + minutePart;
+          const option = document.createElement("option");
+
+          option.value = timeValue;
+          option.textContent = timeValue;
+
+          if (timeValue === existingValue) {
+            option.selected = true;
+            previousSelectionStillAvailable = true;
+            prompt.selected = false;
+          }
+
+          fragment.append(option);
+          availableCount += 1;
+        }
+
+        appointmentTimeSelect.replaceChildren(fragment);
+        appointmentTimeSelect.disabled = availableCount === 0;
+
+        if (!previousSelectionStillAvailable) {
+          appointmentTimeSelect.value = "";
+        }
+
+        if (isToday && availableCount === 0) {
+          timeHint.textContent = "На сегодня свободных интервалов больше нет. Выберите другую дату.";
+        } else if (isToday) {
+          timeHint.textContent = "Прошедшее время скрыто. Доступны интервалы до 21:00.";
+        } else {
+          timeHint.textContent = "Доступные интервалы: каждые 30 минут с 09:00 до 21:00.";
+        }
+      }
+
+      function refreshTimeSlotsIfNeeded() {
+        if (appointmentDateInput.value === getLocalDateString(new Date())) {
+          updateTimeSlots();
+        }
+      }
+
+      function setWizardStep(stepNumber) {
+        const showReceipt = stepNumber === 1;
+
+        stepOne.hidden = !showReceipt;
+        stepTwo.hidden = showReceipt;
+        stepOneDot.classList.toggle("is-active", showReceipt);
+        stepOneDot.classList.toggle("is-complete", !showReceipt);
+        stepTwoDot.classList.toggle("is-active", !showReceipt);
+
+        if (!showReceipt) {
+          updateTimeSlots();
+          window.setTimeout(() => clientNameInput.focus(), 40);
+        }
+      }
+
+      function openWizard() {
+        if (selectedServices.size === 0) {
+          return;
+        }
+
+        previousWizardFocus = document.activeElement;
+        bookingForm.reset();
+        formArea.classList.remove("is-success");
+        successScreen.classList.remove("is-visible");
+        submitBookingButton.disabled = false;
+        submitBookingButton.textContent = "Отправить заявку";
+        clearFormError();
+        appointmentDateInput.min = getLocalDateString(new Date());
+        appointmentTimeSelect.replaceChildren();
+        appointmentTimeSelect.disabled = true;
+        setWizardStep(1);
+
+        wizardBackdrop.classList.add("is-open");
+        wizardBackdrop.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+        window.setTimeout(() => closeWizardButton.focus(), 40);
+      }
+
+      function closeWizard() {
+        if (requestInProgress) {
+          return;
+        }
+
+        wizardBackdrop.classList.remove("is-open");
+        wizardBackdrop.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+
+        if (refreshTimeSlotsTimer) {
+          window.clearInterval(refreshTimeSlotsTimer);
+          refreshTimeSlotsTimer = 0;
+        }
+
+        if (previousWizardFocus && typeof previousWizardFocus.focus === "function") {
+          previousWizardFocus.focus();
+        }
+      }
+
+      function openSlotAlert() {
+        previousAlertFocus = document.activeElement;
+        slotAlertBackdrop.classList.add("is-open");
+        slotAlertBackdrop.setAttribute("aria-hidden", "false");
+        window.setTimeout(() => dismissSlotAlertButton.focus(), 40);
+      }
+
+      function closeSlotAlert() {
+        slotAlertBackdrop.classList.remove("is-open");
+        slotAlertBackdrop.setAttribute("aria-hidden", "true");
+
+        window.setTimeout(() => {
+          if (appointmentTimeSelect.offsetParent !== null && !appointmentTimeSelect.disabled) {
+            appointmentTimeSelect.focus();
+          } else if (previousAlertFocus && typeof previousAlertFocus.focus === "function") {
+            previousAlertFocus.focus();
+          }
+        }, 30);
+      }
+
+      function focusTrap(event, backdrop) {
+        if (event.key !== "Tab" || !backdrop.classList.contains("is-open")) {
+          return;
+        }
+
+        const focusableElements = Array.from(
+          backdrop.querySelectorAll("button:not(:disabled), input:not(:disabled), select:not(:disabled)")
+        ).filter(element => element.offsetParent !== null);
+
+        if (focusableElements.length === 0) {
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+
+      categoryTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          activeCategory = tab.dataset.category;
+
+          categoryTabs.forEach(item => {
+            item.setAttribute("aria-selected", String(item === tab));
+          });
+
+          applyFilters();
+        });
+      });
+
+      searchInput.addEventListener("input", applyFilters);
+
+      serviceCards.forEach(card => {
+        const button = card.querySelector(".select-button");
+        const name = card.dataset.name;
+        const price = Number(card.querySelector("[data-price]").dataset.price);
+
+        button.addEventListener("click", () => {
+          if (selectedServices.has(name)) {
+            selectedServices.delete(name);
+            card.classList.remove("is-selected");
+            button.textContent = "Выбрать";
+            button.setAttribute("aria-pressed", "false");
+          } else {
+            selectedServices.set(name, { name: name, price: price });
+            card.classList.add("is-selected");
+            button.textContent = "Убрать";
+            button.setAttribute("aria-pressed", "true");
+          }
+
+          updateCart();
+        });
+      });
+
+      openWizardButton.addEventListener("click", openWizard);
+      closeWizardButton.addEventListener("click", closeWizard);
+      backToServicesButton.addEventListener("click", closeWizard);
+
+      wizardBackdrop.addEventListener("click", event => {
+        if (event.target === wizardBackdrop) {
+          closeWizard();
+        }
+      });
+
+      continueToFormButton.addEventListener("click", () => {
+        if (selectedServices.size > 0) {
+          setWizardStep(2);
+          if (refreshTimeSlotsTimer) {
+            window.clearInterval(refreshTimeSlotsTimer);
+          }
+          refreshTimeSlotsTimer = window.setInterval(refreshTimeSlotsIfNeeded, 30000);
+        }
+      });
+
+      appointmentDateInput.addEventListener("change", () => {
+        clearFormError();
+        updateTimeSlots();
+      });
+
+      appointmentTimeSelect.addEventListener("change", clearFormError);
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          refreshTimeSlotsIfNeeded();
+        }
+      });
+
+      window.addEventListener("storage", event => {
+        if (event.key === STORAGE_KEY && appointmentDateInput.value) {
+          updateTimeSlots();
+        }
+      });
+
+      dismissSlotAlertButton.addEventListener("click", closeSlotAlert);
+
+      slotAlertBackdrop.addEventListener("click", event => {
+        if (event.target === slotAlertBackdrop) {
+          closeSlotAlert();
+        }
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && slotAlertBackdrop.classList.contains("is-open")) {
+          event.preventDefault();
+          closeSlotAlert();
+          return;
+        }
+
+        if (event.key === "Escape" && wizardBackdrop.classList.contains("is-open")) {
+          closeWizard();
+          return;
+        }
+
+        focusTrap(event, wizardBackdrop);
+        focusTrap(event, slotAlertBackdrop);
+      });
+
+      bookingForm.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        if (requestInProgress || !bookingForm.reportValidity()) {
+          return;
+        }
+
+        clearFormError();
+        updateTimeSlots();
+
+        const selectedDate = appointmentDateInput.value;
+        const selectedTime = appointmentTimeSelect.value;
+
+        if (!selectedDate || !selectedTime) {
+          showFormError("Выберите дату и время записи.");
+          appointmentTimeSelect.focus();
+          return;
+        }
+
+        const dateObject = new Date(selectedDate + "T00:00:00");
+        if (Number.isNaN(dateObject.getTime()) || selectedDate < getLocalDateString(new Date())) {
+          showFormError("Выберите сегодняшнюю или будущую дату.");
+          appointmentDateInput.focus();
+          return;
+        }
+
+        const [selectedHours, selectedMinutes] = selectedTime.split(":").map(Number);
+        const selectedMinutesOfDay = selectedHours * 60 + selectedMinutes;
+        const isValidBusinessTime =
+          Number.isInteger(selectedHours) &&
+          Number.isInteger(selectedMinutes) &&
+          selectedMinutes % 30 === 0 &&
+          selectedMinutesOfDay >= 9 * 60 &&
+          selectedMinutesOfDay <= 21 * 60;
+
+        if (!isValidBusinessTime) {
+          showFormError("Выберите интервал с 09:00 до 21:00.");
+          appointmentTimeSelect.focus();
+          return;
+        }
+
+        if (selectedDate === getLocalDateString(new Date())) {
+          const now = new Date();
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+          if (selectedMinutesOfDay <= currentMinutes) {
+            updateTimeSlots();
+            showFormError("Это время уже прошло. Выберите более поздний интервал.");
+            appointmentTimeSelect.focus();
+            return;
+          }
+        }
+
+        const slotStatus = isSlotBooked(selectedDate, selectedTime);
+
+        if (slotStatus.unavailable) {
+          showFormError("Браузер не может проверить локальное хранилище. Разрешите сайту сохранять данные и попробуйте ещё раз.");
+          return;
+        }
+
+        if (slotStatus.booked) {
+          openSlotAlert();
+          return;
+        }
+
+        const webhookUrl = ALABABOT_URL.trim();
+
+        if (!webhookUrl) {
+          showFormError("Добавьте адрес вебхука Alababot в ALABABOT_URL перед отправкой заявок.");
+          return;
+        }
+
+        const formData = new FormData(bookingForm);
+        const services = getSelectedServices().map(service => ({
+          name: service.name,
+          price: service.price
+        }));
+        const total = getTotal();
+        const clientName = String(formData.get("name")).trim();
+        const clientPhone = String(formData.get("phone")).trim();
+        const formattedDate = formatDateForMessage(selectedDate);
+
+        const messageLines = [
+          "Новая заявка — Линель. nails room, Ялта",
+          "Имя: " + clientName,
+          "Телефон: " + clientPhone,
+          "Дата: " + formattedDate,
+          "Время: " + selectedTime,
+          "Услуги:",
+          ...services.map(service => "— " + service.name + " — " + formatPrice(service.price)),
+          "Итоговая сумма: " + formatPrice(total)
+        ];
+
+        const payload = {
+          source: "Линель. nails room — сайт",
+          city: "Ялта",
+          name: clientName,
+          phone: clientPhone,
+          date: selectedDate,
+          time: selectedTime,
+          services: services,
+          servicesText: services.map(service => service.name).join(", "),
+          totalPrice: total,
+          currency: "RUB",
+          message: messageLines.join("\n"),
+          submittedAt: new Date().toISOString()
+        };
+
+        const reservation = saveSlotSnapshot(selectedDate, selectedTime);
+
+        if (reservation.duplicate) {
+          openSlotAlert();
+          return;
+        }
+
+        if (!reservation.saved) {
+          showFormError("Не удалось сохранить время в этом браузере. Проверьте настройки хранилища и попробуйте ещё раз.");
+          return;
+        }
+
+        requestInProgress = true;
+        submitBookingButton.disabled = true;
+        submitBookingButton.textContent = "Отправляем…";
+
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 20000);
+
+        try {
+          const response = await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json, text/plain, */*"
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal,
+            mode: "cors",
+            credentials: "omit"
+          });
+
+          if (!response.ok) {
+            throw new Error("Сервер вернул статус " + response.status + ".");
+          }
+
+          bookingForm.reset();
+          appointmentTimeSelect.replaceChildren();
+          appointmentTimeSelect.disabled = true;
+          formArea.classList.add("is-success");
+          successScreen.classList.add("is-visible");
+          window.setTimeout(() => dismissSuccessButton.focus(), 60);
+        } catch (error) {
+          removeSlotSnapshot(selectedDate, selectedTime);
+
+          if (error.name === "AbortError") {
+            showFormError("Сервер не ответил вовремя. Проверьте соединение и попробуйте ещё раз.");
+          } else {
+            showFormError("Не удалось отправить заявку. Проверьте адрес вебхука и настройки CORS, затем попробуйте ещё раз.");
+          }
+
+          submitBookingButton.disabled = false;
+          submitBookingButton.textContent = "Отправить заявку";
+        } finally {
+          window.clearTimeout(timeoutId);
+          requestInProgress = false;
+        }
+      });
+
+      dismissSuccessButton.addEventListener("click", () => {
+        selectedServices.clear();
+
+        serviceCards.forEach(card => {
+          card.classList.remove("is-selected");
+          const button = card.querySelector(".select-button");
+          button.textContent = "Выбрать";
+          button.setAttribute("aria-pressed", "false");
+        });
+
+        updateCart();
+        bookingForm.reset();
+        appointmentTimeSelect.replaceChildren();
+        appointmentTimeSelect.disabled = true;
+        formArea.classList.remove("is-success");
+        successScreen.classList.remove("is-visible");
+        closeWizard();
+      });
+
+      appointmentDateInput.min = getLocalDateString(new Date());
+      updateCart();
+      applyFilters();
+    })();
+  </script>
 </body>
 </html>
